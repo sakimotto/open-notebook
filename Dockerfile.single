@@ -65,8 +65,8 @@ ENV HOSTNAME=0.0.0.0
 # Setup directories and permissions
 RUN mkdir -p /app/data /mydata
 
-# Ensure wait-for-api script is executable
-RUN chmod +x /app/scripts/wait-for-api.sh
+# Ensure wait-for-api script is executable and has LF line endings
+RUN sed -i 's/\r$//' /app/scripts/wait-for-api.sh && chmod +x /app/scripts/wait-for-api.sh
 
 # Copy supervisord configuration
 COPY supervisord.single.conf /etc/supervisor/conf.d/supervisord.conf

@@ -1,0 +1,26 @@
+services:
+  open_notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile.single
+    ports:
+      - "8502:8502"  # Frontend
+      - "5055:5055"  # API
+    environment:
+      - SURREAL_URL=ws://localhost:8000/rpc
+      # Security: Required for public deployment
+      - OPEN_NOTEBOOK_PASSWORD=${OPEN_NOTEBOOK_PASSWORD}
+      
+      # AI Providers - Set these in your hosting dashboard
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      
+      # Optional Configuration
+      - OLLAMA_API_BASE=${OLLAMA_API_BASE}
+    volumes:
+      - ./notebook_data:/app/data
+      - ./surreal_data:/mydata
+    restart: always
